@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function getClosestMetroStation(latitude, longitude, metroStations) {
-  // 현재 위치와 가장 가까운 지하철 역을 찾는 함수
+  //현재 위치와 가장 가까운 지하철 역을 찾는 함수
   if (!latitude || !longitude) {
     return null;
   }
@@ -27,7 +27,7 @@ function getClosestMetroStation(latitude, longitude, metroStations) {
 
 function Haversine(lat1, lon1, lat2, lon2) {
   //하버시안 공식을 이용하여 두 점 사이의 거리 구하기
-  const R = 6371e3; // 지구의 반지름 (m)
+  const R = 6371e3; //지구의 반지름
   const φ1 = (lat1 * Math.PI) / 180;
   const φ2 = (lat2 * Math.PI) / 180;
   const Δφ = ((lat2 - lat1) * Math.PI) / 180;
@@ -38,7 +38,7 @@ function Haversine(lat1, lon1, lat2, lon2) {
     Math.cos(φ1) *
       Math.cos(φ2) *
       Math.sin(Δλ / 2) *
-      Math.sin(Δλ / 2);
+      Math.sin(Δλ/2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
   return d;
@@ -65,7 +65,7 @@ function App() {
       console.log('Geolocation is not supported by this browser.');
     }
 
-    // csv 파일에서 지하철 역 정보 가져오기
+    //csv 파일에서 지하철 역 정보 가져오기
     fetch('/metro.csv', {
       headers: {
         'Content-Type': 'text/csv; charset=UTF-8',
@@ -74,7 +74,7 @@ function App() {
       .then((response) => response.text())
       .then((data) => {
         const rows = data.split('\n');
-        //metroStation의 구조체 선언 부분
+        //Structure declaration part of metroStation
         const metroStations = rows.reduce((result, row) => {
           const columns = row.split(',');
           const station = {
@@ -104,11 +104,20 @@ function App() {
       </div>
       <div>
         <h1>Close Station</h1>
-        <p>Station: {closestStation && closestStation.name}</p>
+        {closestStation && (
+          <div>
+            <p>Station: {closestStation.name}</p>
+            {metroStations
+              .filter((station) => station.name === closestStation.name)
+              .map((station) => (
+                <p>Line: {station.line}</p>
+              ))}
+          </div>
+        )}
       </div>
       <div className="btn_area">
-        <p className="belowDescription"> 역의 정확도는 사용자의 네트워크 상태에 따라 틀릴수도 있습니다.</p>
-      </div>      
+        <p className="belowDescription">역의 정확도는 사용자의 네트워크 상태에 따라 오차가 발생할 수 있습니다.</p>
+      </div>
     </div>
   );
 }
