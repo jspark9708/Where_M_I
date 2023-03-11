@@ -22,3 +22,72 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
+
+.banner {
+  background-color: #39438d;
+  color: #ffffff;
+  text-align: center;
+  padding: 2px;
+}
+
+.banner h1 {
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px;
+  padding: 0;
+}
+
+.station_container {
+  position: relative;
+  margin: 10%;
+}
+
+.circle {
+  position: relative;
+  display: inline-block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  width: 150px;
+  height: 50px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2%;
+}
+
+.line-text {
+  font-size: 18px;
+  color: black;
+  margin: 10px;
+}
+.line-1 {
+  border: 10px solid #0052A4;
+}
+.line-2 {
+  border: 10px solid #00A84D;
+}
+.line-3 {
+  border: 10px solid #EF7C1C;
+}
+.line-4 {
+  border: 10px solid #00A5DE;
+}
+.line-5 {
+  border: 10px solid #996CAC;
+}
+.line-6 {
+  border: 10px solid #CD7C2F;
+}
+.line-7 {
+  border: 10px solid #747F00;
+}
+.line-8 {
+  border: 10px solid #E6186C;
+}
+.line-9 {
+  border: 10px solid #BDB092;
+}

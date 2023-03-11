@@ -96,27 +96,36 @@ function App() {
   }, [latitude, longitude, metroStations]);
 
   return (
-    <div className="container">
-      <div>
-        <h1>Current Location</h1>
-        <p>Latitude: {latitude}</p>
-        <p>Longitude: {longitude}</p>
+    <div>
+      <div class="banner">
+        <h1>Where 'M' I ?</h1>
+        <p>사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
-      <div>
-        <h1>Close Station</h1>
-        {closestStation && (
-          <div>
-            <p>Station: {closestStation.name}</p>
-            {metroStations
-              .filter((station) => station.name === closestStation.name)
-              .map((station) => (
-                <p>Line: {station.line}</p>
-              ))}
+      <div className="container">
+        <div>
+          <h1>Current Location</h1>
+          <p>Latitude: {latitude}</p>
+          <p>Longitude: {longitude}</p>
+        </div>
+        <div>
+  <h1>Close Station</h1>
+  {closestStation && (
+    <div class="station_container">
+      {metroStations
+        .filter((station) => station.name === closestStation.name)
+        .map((station) => (
+          <div className={`circle line-${station.line}`} key={station.id}>
+            <p className="line-text">{closestStation.name}</p>
+            <p className="line-text">{station.line}</p>
           </div>
-        )}
-      </div>
-      <div className="btn_area">
-        <p className="belowDescription">역의 정확도는 사용자의 네트워크 상태에 따라 오차가 발생할 수 있습니다.</p>
+        ))}
+    </div>
+  )}
+</div>
+
+        <div className="btn_area">
+         <p className="belowDescription">역의 정확도는 사용자의 네트워크 상태에 따라 오차가 발생할 수 있습니다.</p>
+        </div>
       </div>
     </div>
   );
