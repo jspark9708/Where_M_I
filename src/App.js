@@ -29,15 +29,36 @@ function getOtherLineStation(closestStation, metroStations) {
   if (!closestStation) {
     return [];
   }
-  
+
   const otherStation = [];
-  
-  for (let i = 0; i < metroStations.length; i++ ){
-    if(closestStation.name === metroStations[i].name && closestStation.line !== metroStations[i].line){
+
+  for (let i = 0; i < metroStations.length; i++) {
+    if (closestStation.name === metroStations[i].name && closestStation.line !== metroStations[i].line) {
       otherStation.push(metroStations[i]);
     }
   }
   return otherStation;
+}
+
+function getAdjacentStations(station, metroStations) {
+  const adjacentStations = {
+    previousStation: null,
+    nextStation: null,
+  };
+  let found = false;
+  for (let i = 0; i < metroStations.length; i++) {
+    if (metroStations[i].name === station.name && metroStations[i].line === station.line) {
+      found = true;
+    } else if (found && metroStations[i].name === station.name && metroStations[i].line !== station.line) {
+      break;
+    } else if (found) {
+      adjacentStations.nextStation = metroStations[i];
+      break;
+    } else {
+      adjacentStations.previousStation = metroStations[i];
+    }
+  }
+  return adjacentStations;
 }
 
 function Haversine(lat1, lon1, lat2, lon2) {
@@ -62,6 +83,19 @@ function App() {
   const [metroStations, setMetroStations] = useState([]);
   const [closestStation, setClosestStation] = useState(null);
   const [otherStation, setOtherLineStation] = useState([]);
+  const [previousStation, setPreviousStation] = useState(null);
+  const [nextStation, setNextStation] = useState(null);
+
+  useEffect(() => {
+    if (closestStation) {
+      const { previousStation, nextStation } = getAdjacentStations(closestStation, metroStations);
+      setPreviousStation(previousStation);
+      setNextStation(nextStation);
+    } else {
+      setPreviousStation(null);
+      setNextStation(null);
+    }
+  }, [closestStation, metroStations]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -123,37 +157,42 @@ useEffect(() => {
         <p className="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
       <div className="container">
-        <div>
-          <h1>Current Location</h1>
-          <p>Latitude: {latitude}</p>
-          <p>Longitude: {longitude}</p>
-        </div>
-        <div>
-          <h1>Close Station</h1>
-        </div>
-        <div style={{ display: "inline-block" }}>
-          {closestStation?.line && (
-            <div className={`circle line-${closestStation.line}`}>
-             <p className="line-text">{closestStation.name}</p>
-             <p className="line-text">{closestStation.line}</p>
-            </div>
-          )}
-        
-          {otherStation.map((station) => (
-            <div key={station.id} className={`circle line-${station.line}`}>
-              <p className="line-text">{station.name}</p>
-              <p className="line-text">{station.line}</p>
-            </div>
-          ))}
-        </div>
-        <div className="btn_area">
-          <p className="belowDescription">
-            역의 정확도는 사용자의 네트워크 상태에 따라 오차가 발생할 수
-            있습니다.
-          </p>
-        </div>
+      <div>
+        <h1>Close Station</h1>
+        {closestStation && (
+          <div className={`circle line-${closestStation.line}`}>
+            <p className="line-name">{closestStation.line}</p>
+            <p className="station-name">{closestStation.name}</p>
+          </div>
+        )}
+        {previousStation && (
+          <div>
+            <h2>Previous Station</h2>
+            <p>{previousStation.name} ({previousStation.line})</p>
+          </div>
+        )}
+        {nextStation && (
+          <div>
+            <h2>Next Station</h2>
+            <p>{nextStation.name} ({nextStation.line})</p>
+          </div>
+        )}
       </div>
-    </div>
+      <div>
+        <h1>Other Stations</h1>
+        {otherStation.map((station) => (
+          <div key={station.id}>
+            <p>{station.name} ({station.line})</p>
+            {getAdjacentStations(station, metroStations).previousStation && (
+              <p>Previous station: {getAdjacentStations(station, metroStations).previousStation.name} ({getAdjacentStations(station, metroStations).previousStation.line})</p>
+            )}
+            {getAdjacentStations(station, metroStations).nextStation && (
+              <p>Next station: {getAdjacentStations(station, metroStations).nextStation.name} ({getAdjacentStations(station, metroStations).nextStation.line})</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div></div>
   );
 }
 
