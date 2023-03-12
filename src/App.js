@@ -97,8 +97,8 @@ function App() {
   return (
     <div>
       <div class="banner">
-        <h1>Where 'M' I ?</h1>
-        <p>사용자와 제일 가까운 역을 알려드립니다!</p>
+      <img class="logo_image" alt="metro_logo" src="img/metrologo.png" />
+        <p class="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
       <div className="container">
         <div>

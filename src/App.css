@@ -37,6 +37,16 @@
   padding: 0;
 }
 
+.banner_text {
+  font-size: 13px;
+}
+
+
+.logo_image {
+  width: 250px;
+  object-fit: cover;
+}
+
 .station_container {
   position: relative;
   margin: 50px;
