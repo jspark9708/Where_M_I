@@ -25,6 +25,21 @@ function getClosestMetroStation(latitude, longitude, metroStations) {
   return closestStation;
 }
 
+function getOtherLineStation(closestStation, metroStations) {
+  if (!closestStation) {
+    return [];
+  }
+  
+  const otherStation = [];
+  
+  for (let i = 0; i < metroStations.length; i++ ){
+    if(closestStation.name === metroStations[i].name && closestStation.line !== metroStations[i].line){
+      otherStation.push(metroStations[i]);
+    }
+  }
+  return otherStation;
+}
+
 function Haversine(lat1, lon1, lat2, lon2) {
   //하버시안 공식을 이용하여 두 점 사이의 거리 구하기
   const R = 6371e3; //지구의 반지름
@@ -46,6 +61,7 @@ function App() {
   const [longitude, setLongitude] = useState(null);
   const [metroStations, setMetroStations] = useState([]);
   const [closestStation, setClosestStation] = useState(null);
+  const [otherStation, setOtherLineStation] = useState([]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -94,11 +110,17 @@ function App() {
     );
   }, [latitude, longitude, metroStations]);
 
+useEffect(() => {
+    setOtherLineStation(
+      getOtherLineStation(closestStation, metroStations)
+    );
+  }, [closestStation, metroStations]);
+
   return (
     <div>
-      <div class="banner">
-      <img class="logo_image" alt="metro_logo" src="img/metrologo.png" />
-        <p class="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
+      <div className="banner">
+      <img className="logo_image" alt="metro_logo" src="img/metrologo.png" />
+        <p className="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
       <div className="container">
         <div>
@@ -108,23 +130,22 @@ function App() {
         </div>
         <div>
           <h1>Close Station</h1>
-          {closestStation && (
-            <div class="station_container">
-              {metroStations
-                .filter((station) => station.name === closestStation.name)
-                .map((station) => (
-                  <div
-                    className={`circle line-${station.line}`}
-                    key={station.id}
-                  >
-                    <p className="line-text">{closestStation.name}</p>
-                    <p className="line-text">{station.line}</p>
-                  </div>
-                ))}
+        </div>
+        <div style={{ display: "inline-block" }}>
+          {closestStation?.line && (
+            <div className={`circle line-${closestStation.line}`}>
+             <p className="line-text">{closestStation.name}</p>
+             <p className="line-text">{closestStation.line}</p>
             </div>
           )}
+        
+          {otherStation.map((station) => (
+            <div key={station.id} className={`circle line-${station.line}`}>
+              <p className="line-text">{station.name}</p>
+              <p className="line-text">{station.line}</p>
+            </div>
+          ))}
         </div>
-
         <div className="btn_area">
           <p className="belowDescription">
             역의 정확도는 사용자의 네트워크 상태에 따라 오차가 발생할 수
