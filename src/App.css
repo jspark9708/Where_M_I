@@ -17,7 +17,7 @@
 }
 
 .btn_area {
-  position: fixed;
+  position: relative;
   bottom: 5%;
   left: 50%;
   transform: translate(-50%, 0);
@@ -39,7 +39,7 @@
 
 .station_container {
   position: relative;
-  margin: 10%;
+  margin: 50px;
 }
 
 .circle {
@@ -56,7 +56,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2%;
+  margin: 15px;
 }
 
 .line-text {
