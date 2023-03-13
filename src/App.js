@@ -51,10 +51,10 @@ function getAdjacentStations(station, metroStations) {
       found = true;
     } else if (found && metroStations[i].name === station.name && metroStations[i].line !== station.line) {
       break;
-    } else if (found) {
+    } else if (found && metroStations[i].line === station.line) {
       adjacentStations.nextStation = metroStations[i];
       break;
-    } else {
+    } else if (metroStations[i].line === station.line) {
       adjacentStations.previousStation = metroStations[i];
     }
   }
