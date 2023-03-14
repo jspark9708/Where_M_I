@@ -1,14 +1,14 @@
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   text-align: center;
-}
-
-.container > div {
-  margin: 10px 0;
 }
 
 .belowDescription {
@@ -47,21 +47,31 @@
   object-fit: cover;
 }
 
-.station_container {
-  position: relative;
-  margin: 50px;
+.arraymiddle {
+  display: inline;
+  justify-content: right;
 }
 
-.circle {
+.rounded_rec {
   position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  float: left;
   width: 50px;
   height: 50px;
   width: 150px;
   height: 50px;
   border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
+}
+
+.circle {
+  position: relative;
+  float: left;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;

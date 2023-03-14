@@ -157,42 +157,43 @@ useEffect(() => {
         <p className="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
       <div className="container">
-      <div>
         <h1>Close Station</h1>
-        {closestStation && (
-          <div className={`circle line-${closestStation.line}`}>
-            <p className="line-name">{closestStation.line}</p>
-            <p className="station-name">{closestStation.name}</p>
-          </div>
-        )}
-        {previousStation && (
-          <div>
-            <h2>Previous Station</h2>
-            <p>{previousStation.name} ({previousStation.line})</p>
-          </div>
-        )}
-        {nextStation && (
-          <div>
-            <h2>Next Station</h2>
-            <p>{nextStation.name} ({nextStation.line})</p>
-          </div>
-        )}
-      </div>
-      <div>
-        <h1>Other Stations</h1>
+        <div>
+          {previousStation && (
+           <p className={`circle line-${previousStation.line}`}>
+             {previousStation.name}
+           </p>
+         )}
+          {closestStation && (
+           <p className={`rounded_rec line-${closestStation.line}`}>
+              {closestStation.name}
+           </p>
+          )}
+          {nextStation && (
+            <p className={`circle line-${nextStation.line}`}>
+              {nextStation.name}
+           </p>
+         )}
+        </div>
         {otherStation.map((station) => (
-          <div key={station.id}>
-            <p>{station.name} ({station.line})</p>
+          <div>
             {getAdjacentStations(station, metroStations).previousStation && (
-              <p>Previous station: {getAdjacentStations(station, metroStations).previousStation.name} ({getAdjacentStations(station, metroStations).previousStation.line})</p>
+            <p className={`circle line-${getAdjacentStations(station, metroStations).previousStation.line}`}>
+              {getAdjacentStations(station, metroStations).previousStation.name}
+            </p>
             )}
+            <p className={`rounded_rec line-${station.line}`}>
+              {station.name}
+            </p>
             {getAdjacentStations(station, metroStations).nextStation && (
-              <p>Next station: {getAdjacentStations(station, metroStations).nextStation.name} ({getAdjacentStations(station, metroStations).nextStation.line})</p>
+            <p className={`circle line-${getAdjacentStations(station, metroStations).nextStation.line}`}>
+              {getAdjacentStations(station, metroStations).nextStation.name}
+            </p>
             )}
           </div>
         ))}
       </div>
-    </div></div>
+    </div>
   );
 }
 
