@@ -11,7 +11,7 @@ function getClosestMetroStation(latitude, longitude, metroStations) {
   let closestDistance = Number.MAX_SAFE_INTEGER;
 
   for (let i = 0; i < metroStations.length; i++) {
-    const distance = Haversine(
+    const distance = haversine(
       latitude,
       longitude,
       metroStations[i].lat,
@@ -26,14 +26,19 @@ function getClosestMetroStation(latitude, longitude, metroStations) {
 }
 
 function getOtherLineStation(closestStation, metroStations) {
+  //환승역(역 명은 같으나, 호선이 다른경우)을 구해 반환하는 함수
   if (!closestStation) {
+    //closestStation의 값이 없을때 함수를 더이상 진행하지 않을것
     return [];
   }
 
   const otherStation = [];
 
   for (let i = 0; i < metroStations.length; i++) {
-    if (closestStation.name === metroStations[i].name && closestStation.line !== metroStations[i].line) {
+    if (
+      closestStation.name === metroStations[i].name &&
+      closestStation.line !== metroStations[i].line
+    ) {
       otherStation.push(metroStations[i]);
     }
   }
@@ -41,16 +46,25 @@ function getOtherLineStation(closestStation, metroStations) {
 }
 
 function getAdjacentStations(station, metroStations) {
+  //이전역, 다음역 구해 반환하는 함수
   const adjacentStations = {
     previousStation: null,
     nextStation: null,
   };
   let found = false;
   for (let i = 0; i < metroStations.length; i++) {
-    if (metroStations[i].name === station.name && metroStations[i].line === station.line) {
+    if (
+      metroStations[i].name === station.name &&
+      metroStations[i].line === station.line
+    ) {
       found = true;
-    } else if (found && metroStations[i].name === station.name && metroStations[i].line !== station.line) {
+    } else if (
+      found &&
+      metroStations[i].name === station.name &&
+      metroStations[i].line !== station.line
+    ) {
       break;
+      //이전역, 다음역이 존재하지 않는 경우의 처리
     } else if (found && metroStations[i].line === station.line) {
       adjacentStations.nextStation = metroStations[i];
       break;
@@ -61,20 +75,18 @@ function getAdjacentStations(station, metroStations) {
   return adjacentStations;
 }
 
-function Haversine(lat1, lon1, lat2, lon2) {
-  //하버시안 공식을 이용하여 두 점 사이의 거리 구하기
-  const R = 6371e3; //지구의 반지름
-  const φ1 = (lat1 * Math.PI) / 180;
-  const φ2 = (lat2 * Math.PI) / 180;
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371e3;
+  const phi1 = (lat1 * Math.PI) / 180;
+  const phi2 = (lat2 * Math.PI) / 180;
+  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+  const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
 
   const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    Math.sin(deltaPhi / 2) ** 2 +
+    Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const d = R * c;
-  return d;
+  return R * c;
 }
 
 function App() {
@@ -88,7 +100,10 @@ function App() {
 
   useEffect(() => {
     if (closestStation) {
-      const { previousStation, nextStation } = getAdjacentStations(closestStation, metroStations);
+      const { previousStation, nextStation } = getAdjacentStations(
+        closestStation,
+        metroStations
+      );
       setPreviousStation(previousStation);
       setNextStation(nextStation);
     } else {
@@ -121,7 +136,7 @@ function App() {
       .then((response) => response.text())
       .then((data) => {
         const rows = data.split("\n");
-        //Structure declaration part of metroStation
+        //metroStation 구조체 선언
         const metroStations = rows.reduce((result, row) => {
           const columns = row.split(",");
           const station = {
@@ -144,51 +159,61 @@ function App() {
     );
   }, [latitude, longitude, metroStations]);
 
-useEffect(() => {
-    setOtherLineStation(
-      getOtherLineStation(closestStation, metroStations)
-    );
+  useEffect(() => {
+    setOtherLineStation(getOtherLineStation(closestStation, metroStations));
   }, [closestStation, metroStations]);
 
   return (
     <div>
       <div className="banner">
-      <img className="logo_image" alt="metro_logo" src="img/metrologo.png" />
+        <img className="logo_image" alt="metro_logo" src="img/metrologo.png" />
         <p className="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
       <div className="container">
         <h1>Close Station</h1>
+        {/* 현재역과 현재역의 이전역, 다음역 출력 */}
         <div>
           {previousStation && (
-           <p className={`circle line-${previousStation.line}`}>
-             {previousStation.name}
-           </p>
-         )}
+            <p className={`circle line-${previousStation.line}`}>
+              {previousStation.name}
+            </p>
+          )}
           {closestStation && (
-           <p className={`rounded_rec line-${closestStation.line}`}>
+            <p className={`rounded_rec line-${closestStation.line}`}>
               {closestStation.name}
-           </p>
+            </p>
           )}
           {nextStation && (
             <p className={`circle line-${nextStation.line}`}>
               {nextStation.name}
-           </p>
-         )}
+            </p>
+          )}
         </div>
+        {/* 환승역과 그 역의 이전역, 다음역 출력 */}
         {otherStation.map((station) => (
           <div>
             {getAdjacentStations(station, metroStations).previousStation && (
-            <p className={`circle line-${getAdjacentStations(station, metroStations).previousStation.line}`}>
-              {getAdjacentStations(station, metroStations).previousStation.name}
-            </p>
+              <p
+                className={`circle line-${
+                  getAdjacentStations(station, metroStations).previousStation
+                    .line
+                }`}
+              >
+                {
+                  getAdjacentStations(station, metroStations).previousStation
+                    .name
+                }
+              </p>
             )}
-            <p className={`rounded_rec line-${station.line}`}>
-              {station.name}
-            </p>
+            <p className={`rounded_rec line-${station.line}`}>{station.name}</p>
             {getAdjacentStations(station, metroStations).nextStation && (
-            <p className={`circle line-${getAdjacentStations(station, metroStations).nextStation.line}`}>
-              {getAdjacentStations(station, metroStations).nextStation.name}
-            </p>
+              <p
+                className={`circle line-${
+                  getAdjacentStations(station, metroStations).nextStation.line
+                }`}
+              >
+                {getAdjacentStations(station, metroStations).nextStation.name}
+              </p>
             )}
           </div>
         ))}

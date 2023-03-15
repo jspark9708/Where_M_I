@@ -41,7 +41,6 @@
   font-size: 13px;
 }
 
-
 .logo_image {
   width: 250px;
   object-fit: cover;
@@ -52,6 +51,7 @@
   justify-content: right;
 }
 
+/* 현재역 표현 */
 .rounded_rec {
   position: relative;
   float: left;
@@ -66,6 +66,7 @@
   margin: 15px;
 }
 
+/* 이전역, 다음역 표현 */
 .circle {
   position: relative;
   float: left;
@@ -78,35 +79,36 @@
   margin: 15px;
 }
 
+/* 역 호선에 따라 색상 다르게 처리 */
 .line-text {
   font-size: 18px;
   color: black;
   margin: 10px;
 }
 .line-1 {
-  border: 10px solid #0052A4;
+  border: 10px solid #0052a4;
 }
 .line-2 {
-  border: 10px solid #00A84D;
+  border: 10px solid #00a84d;
 }
 .line-3 {
-  border: 10px solid #EF7C1C;
+  border: 10px solid #ef7c1c;
 }
 .line-4 {
-  border: 10px solid #00A5DE;
+  border: 10px solid #00a5de;
 }
 .line-5 {
-  border: 10px solid #996CAC;
+  border: 10px solid #996cac;
 }
 .line-6 {
-  border: 10px solid #CD7C2F;
+  border: 10px solid #cd7c2f;
 }
 .line-7 {
-  border: 10px solid #747F00;
+  border: 10px solid #747f00;
 }
 .line-8 {
-  border: 10px solid #E6186C;
+  border: 10px solid #e6186c;
 }
 .line-9 {
-  border: 10px solid #BDB092;
+  border: 10px solid #bdb092;
 }
