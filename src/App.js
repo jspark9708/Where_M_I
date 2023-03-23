@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import {Location} from "./map.js";
 
 function getClosestMetroStation(latitude, longitude, metroStations) {
   //현재 위치와 가장 가까운 지하철 역을 찾는 함수
@@ -218,6 +219,7 @@ function App() {
           </div>
         ))}
       </div>
+      <Location />
     </div>
   );
 }
