@@ -219,7 +219,7 @@ function App() {
           </div>
         ))}
       </div>
-      <Location />
+      <div className="ComponentBox"><Location /></div>
     </div>
   );
 }
