@@ -63,6 +63,7 @@
   align-items: center;
   justify-content: center;
   margin: 15px;
+  user-select: none;
 }
 
 /* 이전역, 다음역 표현 */
@@ -76,6 +77,7 @@
   align-items: center;
   justify-content: center;
   margin: 15px;
+  user-select: none;
 }
 
 /* 역 호선에 따라 색상 다르게 처리 */

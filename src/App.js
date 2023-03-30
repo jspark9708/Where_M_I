@@ -158,7 +158,7 @@ function App() {
         <p className="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
       <div className="container">
-        <h1>Close Station</h1>
+        <h2>가장 가까운 역</h2>
         {/* 현재역과 현재역의 이전역, 다음역 출력 */}
         <div>
           {previousStation && (
