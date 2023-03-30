@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Location } from "./map.js";
+import haversine from "./function/haversine.js";
 
 function getClosestMetroStation(latitude, longitude, metroStations) {
   //현재 위치와 가장 가까운 지하철 역을 찾는 함수
@@ -74,20 +75,6 @@ function getAdjacentStations(station, metroStations) {
     }
   }
   return adjacentStations;
-}
-
-function haversine(lat1, lon1, lat2, lon2) {
-  const R = 6371e3;
-  const phi1 = (lat1 * Math.PI) / 180;
-  const phi2 = (lat2 * Math.PI) / 180;
-  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
-  const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
-
-  const a =
-    Math.sin(deltaPhi / 2) ** 2 +
-    Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
 }
 
 function App() {
