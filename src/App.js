@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+
 import { Location } from "./map.js";
-import { getClosestMetroStation } from "./function/getinfo.js";
-import { getOtherLineStation } from "./function/getinfo.js";
-import { getAdjacentStations } from "./function/getinfo.js";
+import { getClosestStation } from "./function/getinfo.js";
+import { getOtherLine } from "./function/getinfo.js";
+import { getAdjacent } from "./function/getinfo.js";
 
 function App() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [metroStations, setMetroStations] = useState([]);
+  const [stations, setStations] = useState([]);
   const [closestStation, setClosestStation] = useState(null);
-  const [otherStation, setOtherLineStation] = useState([]);
-  const [previousStation, setPreviousStation] = useState(null);
-  const [nextStation, setNextStation] = useState(null);
+  const [otherStation, setOtherLine] = useState([]);
+  const [previousStation, setPrev] = useState(null);
+  const [nextStation, setNext] = useState(null);
 
   useEffect(() => {
     if (closestStation) {
-      const { previousStation, nextStation } = getAdjacentStations(
+      const { previousStation, nextStation } = getAdjacent(
         closestStation,
-        metroStations
+        stations
       );
-      setPreviousStation(previousStation);
-      setNextStation(nextStation);
+      setPrev(previousStation);
+      setNext(nextStation);
     } else {
-      setPreviousStation(null);
-      setNextStation(null);
+      setPrev(null);
+      setNext(null);
     }
-  }, [closestStation, metroStations]);
+  }, [closestStation, stations]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -65,19 +66,17 @@ function App() {
           result.push(station);
           return result;
         }, []);
-        setMetroStations(metroStations);
+        setStations(metroStations);
       });
   }, []);
 
   useEffect(() => {
-    setClosestStation(
-      getClosestMetroStation(latitude, longitude, metroStations)
-    );
-  }, [latitude, longitude, metroStations]);
+    setClosestStation(getClosestStation(latitude, longitude, stations));
+  }, [latitude, longitude, stations]);
 
   useEffect(() => {
-    setOtherLineStation(getOtherLineStation(closestStation, metroStations));
-  }, [closestStation, metroStations]);
+    setOtherLine(getOtherLine(closestStation, stations));
+  }, [closestStation, stations]);
 
   return (
     <div>
@@ -108,27 +107,23 @@ function App() {
         {/* 환승역과 그 역의 이전역, 다음역 출력 */}
         {otherStation.map((station) => (
           <div>
-            {getAdjacentStations(station, metroStations).previousStation && (
+            {getAdjacent(station, stations).previousStation && (
               <p
                 className={`circle line-${
-                  getAdjacentStations(station, metroStations).previousStation
-                    .line
+                  getAdjacent(station, stations).previousStation.line
                 }`}
               >
-                {
-                  getAdjacentStations(station, metroStations).previousStation
-                    .name
-                }
+                {getAdjacent(station, stations).previousStation.name}
               </p>
             )}
             <p className={`rounded_rec line-${station.line}`}>{station.name}</p>
-            {getAdjacentStations(station, metroStations).nextStation && (
+            {getAdjacent(station, stations).nextStation && (
               <p
                 className={`circle line-${
-                  getAdjacentStations(station, metroStations).nextStation.line
+                  getAdjacent(station, stations).nextStation.line
                 }`}
               >
-                {getAdjacentStations(station, metroStations).nextStation.name}
+                {getAdjacent(station, stations).nextStation.name}
               </p>
             )}
           </div>

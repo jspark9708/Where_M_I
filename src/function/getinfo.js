@@ -1,6 +1,6 @@
 import haversine from "./haversine.js";
 
-export function getClosestMetroStation(latitude, longitude, metroStations) {
+export function getClosestStation(latitude, longitude, metroStations) {
   //현재 위치와 가장 가까운 지하철 역을 찾는 함수
   if (!latitude || !longitude) {
     return null;
@@ -24,7 +24,7 @@ export function getClosestMetroStation(latitude, longitude, metroStations) {
   return closestStation;
 }
 
-export function getOtherLineStation(closestStation, metroStations) {
+export function getOtherLine(closestStation, metroStations) {
   //환승역(역 명은 같으나, 호선이 다른경우)을 구해 반환하는 함수
   if (!closestStation) {
     //closestStation의 값이 없을때 함수를 더이상 진행하지 않을것
@@ -44,7 +44,7 @@ export function getOtherLineStation(closestStation, metroStations) {
   return otherStation;
 }
 
-export function getAdjacentStations(station, metroStations) {
+export function getAdjacent(station, metroStations) {
   //이전역, 다음역 구해 반환하는 함수
   const adjacentStations = {
     previousStation: null,
