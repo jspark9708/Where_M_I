@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
+import { Route } from "react-router-dom";
 import { Location } from "./map.js";
 import { getClosestStation } from "./function/getinfo.js";
 import { getOtherLine } from "./function/getinfo.js";
 import { getAdjacent } from "./function/getinfo.js";
+
+import Sidebar from "./components/sidebar.js";
+import Info from "./components/info.js";
 
 function App() {
   const [latitude, setLatitude] = useState(null);
@@ -84,6 +87,7 @@ function App() {
         <img className="logo_image" alt="metro_logo" src="img/metrologo.png" />
         <p className="banner_text">사용자와 제일 가까운 역을 알려드립니다!</p>
       </div>
+      <Sidebar />
       <div className="container">
         <h2>가장 가까운 역</h2>
         {/* 현재역과 현재역의 이전역, 다음역 출력 */}
